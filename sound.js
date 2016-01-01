@@ -3,7 +3,7 @@
 // http://qiita.com/umisama/items/fd31da94a4ba2ba34add
 // http://twilightdve.hatenablog.com/entry/2014/08/12/180221
 
-var context;
+var context = null;
 var bpm = null;
 var beats = null;
 
@@ -16,8 +16,10 @@ var drum_count = 0;
 var interval_id = null;
 
 var init = function() {
-    try{
-        context = new webkitAudioContext();
+    try {
+        if (context == null) {
+            context = new webkitAudioContext();
+        }
     } catch(e) {
         console.log(e);
     }
