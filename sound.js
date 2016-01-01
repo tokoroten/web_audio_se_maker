@@ -3,9 +3,9 @@
 // http://qiita.com/umisama/items/fd31da94a4ba2ba34add
 // http://twilightdve.hatenablog.com/entry/2014/08/12/180221
 
-var context;
-var bpm = 72;
-var beats = 5;
+var context = null;
+var bpm = null;
+var beats = null;
 
 var sampling_rate = null;
 var drum_length = 0.02;
@@ -16,8 +16,10 @@ var drum_count = 0;
 var interval_id = null;
 
 var init = function() {
-    try{
-        context = new AudioContext();
+    try {
+        if (context == null) {
+            context = new webkitAudioContext();
+        }
     } catch(e) {
         console.log(e);
     }
@@ -40,12 +42,21 @@ var init = function() {
         }
     }
 
+    if(interval_id) {
+        clearInterval(interval_id);
+        interval_id = null;
+        last_drum = null;
+    }
+
     interval_id = setInterval(update, interval_time / 2 * 1000);
 };
 
 var update = function() {
-    var t = 60.0 / bpm / beats;
-    console.log('hoge',  context.currentTime);
+    bpm = document.querySelector('#bpm').value;
+    beats = document.querySelector('#beats').value;
+
+    var t = 60.0 / bpm;
+    console.log('hoge',  context.currentTime, bpm, beats);
 
     if(last_drum){
         var dt = last_drum + t - context.currentTime;
@@ -63,7 +74,7 @@ var update = function() {
         drum_source_node.buffer = drum_source;
 
         var gain_node = context.createGain();
-        gain_node.gain.value =drum_count % 4 ==0 ? 1.0 : 0.3;
+        gain_node.gain.value =drum_count % beats ==0 ? 1.0 : 0.3;
 
         drum_source_node.connect(gain_node);
         gain_node.connect(context.destination);
@@ -74,5 +85,12 @@ var update = function() {
 };
 
 document.querySelector("#play").addEventListener("click", function(){init();}, false);
-document.querySelector("#stop").addEventListener("click", function(){clearInterval(interval_id)}, false);
+document.querySelector("#stop").addEventListener("click", function(){clearInterval(interval_id);}, false);
 
+document.querySelector("#bpm").addEventListener("input", function(){
+    document.querySelector("#bpm_label").innerText = document.querySelector("#bpm").value;
+}, false);
+
+document.querySelector("#beats").addEventListener("input", function(){
+    document.querySelector("#beats_label").innerText = document.querySelector("#beats").value;
+}, false);
