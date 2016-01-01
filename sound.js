@@ -40,6 +40,12 @@ var init = function() {
         }
     }
 
+    if(interval_id) {
+        clearInterval(interval_id);
+        interval_id = null;
+        last_drum = null;
+    }
+
     interval_id = setInterval(update, interval_time / 2 * 1000);
 };
 
@@ -77,7 +83,7 @@ var update = function() {
 };
 
 document.querySelector("#play").addEventListener("click", function(){init();}, false);
-document.querySelector("#stop").addEventListener("click", function(){clearInterval(interval_id)}, false);
+document.querySelector("#stop").addEventListener("click", function(){clearInterval(interval_id);}, false);
 
 document.querySelector("#bpm").addEventListener("input", function(){
     document.querySelector("#bpm_label").innerText = document.querySelector("#bpm").value;
