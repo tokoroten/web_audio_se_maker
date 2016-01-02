@@ -6,10 +6,44 @@
     <script type="text/javascript" src="sound.js" defer="defer"></script>
 </head>
 
-BPM <input type="range" id="bpm" min="60" max="360" step="12" value="240"><label id="bpm_label">240</label> <br />
-Beats <input type="range" id="beats" min="1" max='8' step="1" value='4'><label id="beats_label">4</label><br />
-
-<button id="play">play sound!</button><br />
+<textarea id="json_drum_pattern" rows="40" cols="80">
+{
+    "bpm":300,
+    "beats":[
+        {
+            "source_node": { "type": "noise", "continuity_count": 20, "length":0.10},
+            "node_list":[
+                {"type":"gain", "gain": 0.8}
+            ]
+        },
+        {
+            "source_node": { "type": "noise", "continuity_count": 10, "length":0.02},
+            "node_list":[
+                {"type":"gain", "gain": 0.3}
+            ]
+        },
+        {
+            "source_node": { "type": "noise", "continuity_count": 5, "length":0.02},
+            "node_list":[
+                {"type":"gain", "gain": 0.3}
+            ]
+        },
+        {
+            "source_node": { "type": "noise", "continuity_count": 5, "length":0.02},
+            "node_list":[
+                {"type":"gain", "gain": 0.3}
+            ]
+        }
+    ]
+}
+</textarea>
+<button id="start">start</button>
 <button id="stop">stop sound!</button><br />
+<div>
+    jsonによるドラムマシンのジェネレータ<br />
+    <a href="https://developer.mozilla.org/ja/docs/Web/API/Web_Audio_API">web audio document</a><br />
+    <a href="https://twitter.com/tokoroten">@tokoroten</a>
+</div>
+
 </body>
 </html>
