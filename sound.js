@@ -14,7 +14,8 @@ var interval_id = null;
 var init = function() {
     try {
         if (context == null) {
-            context = new webkitAudioContext();
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+			context = new AudioContext();
         }
     } catch(e) {
         console.log(e);
